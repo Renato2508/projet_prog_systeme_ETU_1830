@@ -3,8 +3,11 @@ package parcInfo.client;
 import java.io.BufferedReader;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
+import java.rmi.server.LogStream;
 import java.util.Scanner;
 import java.util.Vector;
+import parcInfo.data.*;
 
 import annexes.Terminal;
 
@@ -20,6 +23,120 @@ public class Client {
     }
 
     // _ _ _ METHODS  _ _ _ 
+
+
+    public void traiterSocketException(SocketException se) throws Exception {
+        System.out.println(se.getMessage());
+          if(se.getMessage().contains("Connection reset by peer")){
+            System.out.println("Connexion au serveur interrompue:\t fermeture...");
+            try{
+                this.socket.getInputStream().close();
+                //this.socket.getOutputStream().close();
+                this.socket.close();
+            }
+            catch(Exception e){
+                throw e;
+            }            
+          }
+    }
+
+    public DonneesStatiques getDonneesStatiques(){
+        //les donnes
+        String os = this.os;
+        String nomPc = null;
+        String processeur = null;
+	    String totalMasStorage = null;
+	    String availableMasStorage = null;
+	    String installedRam = null;
+
+        try {
+            processeur = this.getCpuName();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            nomPc = this.getNomPc();
+        } 
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            totalMasStorage = this.getTotalMasStorage();  
+        } 
+        catch(Exception e1) {
+            e1.printStackTrace();
+        }
+
+        try {
+            availableMasStorage = this.getAvailableMasStorage();
+        } 
+        catch (Exception e2) {
+            e2.printStackTrace();
+        }
+
+        try {
+            installedRam = this.getInstalledRam();
+        } 
+        catch (Exception e3) {
+            e3.printStackTrace();
+        }
+
+        return new DonneesStatiques(os, nomPc, processeur, totalMasStorage, availableMasStorage, installedRam);
+    }
+
+    public DonneesDynamiques getDonneesDynamiques(){
+        
+        //Les donnes en question
+        String availableRam = null;
+        String cpuLoadPercentage = null;
+
+        try {
+            availableRam = this.getAvailableRam();
+        } catch (Exception e) {
+            
+        }
+    
+        try {
+            cpuLoadPercentage = this.getCpuLoadPercentage();
+            
+        } catch (Exception e) {
+            
+        }
+        DonneesDynamiques dn = new DonneesDynamiques(availableRam, cpuLoadPercentage);
+        return dn;
+    }
+
+    public String getCpuLoadPercentage() throws Exception{
+        String res = null;                     // le resultat final
+        BufferedReader reader = null;   //le buffered reader qui lira les donnees
+        String cmd = "wmic cpu get loadpercentage";
+        String tempo = null;            //chaine temporaire lors des parcours de reader
+        try{
+            reader = Terminal.executer(cmd);                //execution de la commande de terminal
+            if(this.os.equals("Windows")){
+                for(int i = 1; i<4; i++){
+                    tempo = reader.readLine();
+                }
+                res = tempo;
+            }
+            else if(this.os.equals("Linux")){
+                while((tempo = reader.readLine()).contains("total") == false){
+                }
+                
+                Vector<String> liste = new Vector<String>();
+                Scanner scan=new Scanner(tempo);                     //en fait la ligne de resultat obtenue contient plusieurs valeurs
+                while(scan.hasNext())
+                    liste.add(scan.next());
+                res = liste.get(1);            
+            }
+        }
+        catch(Exception e){
+            throw e;
+        }
+        return res;   
+    }
 
     public String getAvailableMasStorage() throws Exception{
         String res = null;                     // le resultat final
@@ -97,7 +214,17 @@ public class Client {
                     String ecritFr = "moire physique disponible:";
                     if(deComparaison.contains(ecritEng) || deComparaison.contains(ecritFr)) break;
                 }
-                res = tempo;
+                //lecture a l'aide d'un scanner
+                Scanner scanner = new Scanner(tempo);
+                Vector<String> temporaire = new Vector<String>();
+                while(scanner.hasNext()){
+                    temporaire.add(scanner.next());
+                }
+                scanner.close();
+                //System.out.println("RAM:\t"+temporaire);
+                res = temporaire.get(3)+temporaire.get(4);
+
+                //res = tempo;
             }
             else if(this.os.equals("Linux")){
                 while((tempo = reader.readLine()).contains("memavail") == false){
