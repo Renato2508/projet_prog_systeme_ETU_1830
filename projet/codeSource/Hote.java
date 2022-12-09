@@ -30,7 +30,7 @@ public class Hote {
         return res;
     }
     public void traiterSocketException(SocketException se) throws Exception {
-        System.out.println(se.getMessage());
+        //System.out.println(se.getMessage());
           if(se.getMessage().contains("Connection reset")){
             System.out.println("Connexion avec un des hotes interrompue:\t retrait...");
             try{
@@ -39,7 +39,7 @@ public class Hote {
                 this.socket.close();
                 this.serveur.hotes.remove(this);                 //retrait de l'hote pour des chiffres justes
                 this.serveur.statGlobales();
-                this.serveur.afficherStatGlobales();
+                //this.serveur.afficherStatGlobales();
                 //System.out.println("Nombres d'hotes restants:\t"+this.serveur.getNbrHotes());
             }
             catch(Exception e){

@@ -10,7 +10,7 @@ import parcInfo.data.*;
 public class MainClient {
     public static void main(String[] args){
         Client client = new Client();    
-        String ip = "localhost";
+        String ip = "192.168.10.120";
         int port = 1212;
         client.connecter(ip, port);
         //System.out.println("Le socket de ce client:\t"+client.getSocket());
@@ -21,10 +21,10 @@ public class MainClient {
             //envoi periodique des donnees dynamques avec intervalles
                 try{
                     DonneesDynamiques dn = client.getDonneesDynamiques();
-                    System.out.println("DN:"+dn.toVector());
+                    //System.out.println("DN:"+dn.toVector());
                     
                     client.sendObject(dn.toVector());
-                    Thread.sleep(5000);       
+                    Thread.sleep(1000);       
                 }
                 catch(SocketException se1){
                     try{

@@ -26,7 +26,7 @@ public class Client {
 
 
     public void traiterSocketException(SocketException se) throws Exception {
-        System.out.println(se.getMessage());
+        //System.out.println(se.getMessage());
           if(se.getMessage().contains("Connection reset by peer")){
             System.out.println("Connexion au serveur interrompue:\t fermeture...");
             try{
@@ -43,11 +43,11 @@ public class Client {
     public DonneesStatiques getDonneesStatiques(){
         //les donnes
         String os = this.os;
-        String nomPc = null;
-        String processeur = null;
-	    String totalMasStorage = null;
-	    String availableMasStorage = null;
-	    String installedRam = null;
+        String nomPc = "";
+        String processeur = "";
+	    String totalMasStorage = "";
+	    String availableMasStorage = "";
+	    String installedRam = "";
 
         try {
             processeur = this.getCpuName();
@@ -89,8 +89,8 @@ public class Client {
     public DonneesDynamiques getDonneesDynamiques(){
         
         //Les donnes en question
-        String availableRam = null;
-        String cpuLoadPercentage = null;
+        String availableRam = "";
+        String cpuLoadPercentage = "";
 
         try {
             availableRam = this.getAvailableRam();
@@ -320,12 +320,17 @@ public class Client {
 
     public void connecter(String ip, int port){
         //obtenir la connexion d'un socketServer
+        System.out.println("Attente d'une connexion");
         while(this.socket == null)
         {
             try 
-            {
-                this.setSocket(new Socket(ip, port));   
+            { 
+                this.setSocket(new Socket(ip, port));  
+                System.out.println("Connexion reussie"); 
                 //this.socket   = new Socket("192.168.10.54" , 1212);                     //serveur dans ce pc local et le port pour communiquer   
+            }
+            catch(java.net.ConnectException e1){
+
             }
             catch (Exception e) 
             {

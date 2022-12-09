@@ -7,8 +7,8 @@ public class OnVectors
     public static Vector cat(Vector v1, Vector v2)
     {   
         Vector res = new Vector();
-        System.out.println("V1:"+v1);
-        System.out.println("V2:"+v2);
+        //System.out.println("V1:"+v1);
+        //System.out.println("V2:"+v2);
         
         if(v1 == null)   res = v2;
         else if(v2 == null)   res = v1;
@@ -23,7 +23,7 @@ public class OnVectors
                 res.add(o2);
             }
         }
-        System.out.println("CAT:"+res);
+        //System.out.println("CAT:"+res);
         return res;
     }
 }

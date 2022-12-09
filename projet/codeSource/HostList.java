@@ -48,33 +48,33 @@ public class HostList extends JPanel{
     //METHODS
 
     public void update(Hote hote){
-        Container fen = SwingUtilities.getUnwrappedParent(this);
-        fen.setVisible(false);
+        //Container fen = SwingUtilities.getUnwrappedParent(this);
+        //fen.setVisible(false);
         DefaultTableModel model = (DefaultTableModel)this.table.getModel();
         int indiceSuppress = this.dash.frame.serveur.getHotes().indexOf(hote);
         model.removeRow(indiceSuppress);
         model.addRow(hote.getData());
         int nbrLignes = model.getRowCount();
         model.moveRow(nbrLignes-1, nbrLignes-1, indiceSuppress);
-        fen.setVisible(true);
+        //fen.setVisible(true);
     }
 
 
     public void remove(Hote hote){
-        Container fen = SwingUtilities.getUnwrappedParent(this);
-        fen.setVisible(false);
+        //Container fen = SwingUtilities.getUnwrappedParent(this);
+        //fen.setVisible(false);
         DefaultTableModel model = (DefaultTableModel)this.table.getModel();
         int indiceSuppress = this.dash.frame.serveur.getHotes().indexOf(hote);
         model.removeRow(indiceSuppress);
-        fen.setVisible(true);
+        //fen.setVisible(true);
     }    
     
     public void add(Hote hote){
-        Container fen = SwingUtilities.getUnwrappedParent(this);
-        fen.setVisible(false);
+        //Container fen = SwingUtilities.getUnwrappedParent(this);
+        //fen.setVisible(false);
         DefaultTableModel model = (DefaultTableModel)this.table.getModel();
         model.addRow(hote.getData());
-        fen.setVisible(true);
+        //fen.setVisible(true);
     }
 
     
