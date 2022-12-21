@@ -18,14 +18,15 @@ public class Dashboard extends JPanel{
     // _ _ _ CONSTRUCTORS _ _ _
     public Dashboard(MainFrame frame){
         this.setFrame(frame);
-        this.setStat(new GlobalStat(this));
-        this.setListe(new HostList(this));
+        this.setStat(new GlobalStat(this));                         //affichage des statistiques globales
+        this.setListe(new HostList(this));                          //affichage de la liste des hotes connectes
         BoxLayout layout = new BoxLayout(this, BoxLayout.X_AXIS);
         this.setLayout(layout);
         this.add(this.stat);
         this.add(this.liste);
-        //this.add(this.liste);
     }
+
+      // _ _ _ GET SET _ _ _
 
     public MainFrame getFrame() {
         return frame;
@@ -50,7 +51,7 @@ public class Dashboard extends JPanel{
     public void setListe(HostList liste) {
         this.liste = liste;
     }
-    // _ _ _ GET SET _ _ _
+  
 
     
 

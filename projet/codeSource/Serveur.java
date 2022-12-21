@@ -1,5 +1,9 @@
 package parcInfo.serveur;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Vector;
@@ -8,6 +12,7 @@ import parcInfo.graphique.MainFrame;
 
 public class Serveur {
     ServerSocket serveur;
+    int port;
     MainFrame frame = new MainFrame(this);
     Vector<Hote> hotes = new Vector<Hote>();
     int nbrHotes = 0;
@@ -16,8 +21,6 @@ public class Serveur {
 
 
     // _ _ _ CONSTRUCTORS
-    
-    public Serveur(){}
 
     public Serveur(int port) throws Exception{
         try{
@@ -26,38 +29,38 @@ public class Serveur {
         catch(Exception e){
             throw e;
         }
-    }
+    }    
+    public Serveur() throws Exception{
+        try {
+            this.getPortNumber();
+            this.setServeur(new ServerSocket(this.getPort()));
+        } 
+        catch (Exception e) {
+            throw e;
+        }       
+    }  
 
-    // _ _ _ METHODS 
-
-    public void afficherStatGlobales(){
-        System.out.println("Hotes connectes:\t"+this.nbrHotes);
-        System.out.println("Sous linux:\t"+this.nbrLin);
-        System.out.println("Sous windows:\t"+this.nbrWin);
-    }
-
-    public void calculerNbrParOs(){
-        //comptage par os
-        int nbrWin = 0;
-        int nbrLin = 0;
-        for(Hote hote: this.hotes){
-            String os = hote.getSta().get(0);            
-            if(os.equals("Windows"))
-                nbrWin++;
-            else if(os.equals("Linux"))
-                nbrLin++;                
+    // _ _ _ METHODS _ _ _
+    // --- Initialisation
+    public void  getPortNumber() throws Exception{
+        int res = 0;
+        String path = "parcInfo/init.nato",
+                donneeBrute;
+        File source = new File(path);
+        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(source)));
+        br.readLine();
+        try {
+            donneeBrute = br.readLine();
+            String[] donnees = donneeBrute.split(":");
+            res = Integer.valueOf(donnees[1].trim());
         }
-        this.setNbrLin(nbrLin);
-        this.setNbrWin(nbrWin);
-    }
-    public void statGlobales(){
-        this.calculerNbrParOs();
-        this.calculNbrHotes();
-    }
-    public void calculNbrHotes() {
-        this.nbrHotes = this.hotes.size();
+        catch (Exception e) {
+            throw e;
+        }
+        this.setPort(res);
     }
 
+    // --- Connection --- 
     public Hote getConnection()throws Exception{
         try{
         //fonction pour permettre aux sockets clientes de se connecter
@@ -73,6 +76,38 @@ public class Serveur {
         }
     }
 
+    //---Statisiques
+    public void statGlobales(){
+        this.calculerNbrParOs();
+        this.calculNbrHotes();
+    }  
+    public void calculerNbrParOs(){
+        //comptage par os
+        int nbrWin = 0;
+        int nbrLin = 0;
+        for(Hote hote: this.hotes){
+            String os = hote.getSta().get(0);            
+            if(os.equals("Windows"))
+                nbrWin++;
+            else if(os.equals("Linux"))
+                nbrLin++;                
+        }
+        this.setNbrLin(nbrLin);
+        this.setNbrWin(nbrWin);
+    }
+    public void calculNbrHotes() {
+        this.nbrHotes = this.hotes.size();
+    }
+    
+
+    public void afficherStatGlobales(){
+        System.out.println("Hotes connectes:\t"+this.nbrHotes);
+        System.out.println("Sous linux:\t"+this.nbrLin);
+        System.out.println("Sous windows:\t"+this.nbrWin);
+    }
+
+   
+    
     // _ _ _ SET GET  _ _ _
 
     public int getNbrHotes() {
@@ -125,6 +160,15 @@ public class Serveur {
 
     public void setNbrHotes(int nbrHotes) {
         this.nbrHotes = nbrHotes;
+    }
+
+    public int getPort() throws Exception{
+        if(this.port == 0) throw new Exception("Port non initialise");
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
     }  
     
 }

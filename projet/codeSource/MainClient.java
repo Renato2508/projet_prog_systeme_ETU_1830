@@ -9,22 +9,17 @@ import parcInfo.data.*;
 
 public class MainClient {
     public static void main(String[] args){
-        Client client = new Client();    
-        String ip = "192.168.10.120";
-        int port = 1212;
-        client.connecter(ip, port);
-        //System.out.println("Le socket de ce client:\t"+client.getSocket());
-            
+        Client client = null;            
         try{
+            client = new Client(); 
             client.sendObject(client.getDonneesStatiques().toVector()); //envoi unique des donnees statiques
             while(true){
             //envoi periodique des donnees dynamques avec intervalles
                 try{
                     DonneesDynamiques dn = client.getDonneesDynamiques();
-                    //System.out.println("DN:"+dn.toVector());
                     
                     client.sendObject(dn.toVector());
-                    Thread.sleep(1000);       
+                    Thread.sleep(3000);       
                 }
                 catch(SocketException se1){
                     try{
@@ -37,8 +32,7 @@ public class MainClient {
                 }
                 catch(Exception e){
                     e.printStackTrace();
-                } 
-            
+                }             
             }
         }
         catch(SocketException se2){

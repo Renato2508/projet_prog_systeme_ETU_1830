@@ -24,11 +24,23 @@ public class Hote {
     
 
     // _ _ _  METHODS  _ _ _
-
-    public Vector getData(){
-        Vector res = OnVectors.cat(this.sta, this.dyn);
+    // --- Reception de donnees
+    public Object receiveObject() throws Exception
+    {       
+        Object res = null;
+        try{
+            InputStream fluxEntree = this.socket.getInputStream();
+            ObjectInputStream objetEntree = new ObjectInputStream(fluxEntree);
+            res = objetEntree.readObject();    
+        }
+        catch(Exception d)
+        {
+            throw d;            
+        }
         return res;
     }
+
+    // ---Traitement d'exception
     public void traiterSocketException(SocketException se) throws Exception {
         //System.out.println(se.getMessage());
           if(se.getMessage().contains("Connection reset")){
@@ -47,22 +59,14 @@ public class Hote {
             }            
           }
     }
-    
-    public Object receiveObject() throws Exception
-    {       
-        Object res = null;
-        try{
-            InputStream fluxEntree = this.socket.getInputStream();
-            ObjectInputStream objetEntree = new ObjectInputStream(fluxEntree);
-            res = objetEntree.readObject();    
-        }
-        catch(Exception d)
-        {
-            throw d;            
-        }
+  
+    // --- Assemblage des donnees
+    public Vector getData(){
+        Vector res = OnVectors.cat(this.sta, this.dyn);
         return res;
     }
-
+      
+    
     // _ _ _ SET GET _ _ _
 
     public Vector<String> getDyn() {

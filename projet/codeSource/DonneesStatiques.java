@@ -5,17 +5,13 @@ import java.util.Vector;
 public class DonneesStatiques{
 	String nomPc;
 	String processeur;
-	String totalMasStorage;
-	String availableMasStorage;
 	String installedRam;
 	String os;
 			
 	//_ _ _ CONSTRUCTORS
-	public DonneesStatiques(String os, String nomPc, String proc, String totalMasStorage, String availableMasStorage, String installedRam){
+	public DonneesStatiques(String os, String nomPc, String proc, String installedRam){
 		this.setOs(os);
 		this.setNomPc(nomPc);
-		this.setTotalMasStorage(totalMasStorage);
-		this.setAvailableMasStorage(availableMasStorage);
 		this.setInstalledRam(installedRam);
 		this.setProcesseur(proc);
 	}
@@ -28,8 +24,6 @@ public class DonneesStatiques{
 		res.add(this.getOs());
 		res.add(this.getProcesseur());
 		res.add(this.getNomPc());
-		res.add(this.getTotalMasStorage());
-		res.add(this.getAvailableMasStorage());
 		res.add(this.getInstalledRam());
 		return res;
 	}
@@ -49,22 +43,6 @@ public class DonneesStatiques{
 
 	public void setNomPc(String nomPc) {
 		this.nomPc = nomPc;
-	}
-
-	public String getTotalMasStorage() {
-		return totalMasStorage;
-	}
-
-	public void setTotalMasStorage(String totalMasStorage) {
-		this.totalMasStorage = totalMasStorage;
-	}
-
-	public String getAvailableMasStorage() {
-		return availableMasStorage;
-	}
-
-	public void setAvailableMasStorage(String availableMasStorage) {
-		this.availableMasStorage = availableMasStorage;
 	}
 
 	public String getInstalledRam() {

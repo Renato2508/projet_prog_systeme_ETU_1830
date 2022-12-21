@@ -28,15 +28,13 @@ public class HostList extends JPanel{
         cols.add("OS");
         cols.add("CPU");
         cols.add("NOM");
-        cols.add("ROM");
-        cols.add("FREE ROM");
-        cols.add("RAM");
-        cols.add("FREE RAM");
-        cols.add("CPU LOAD");
+        cols.add("RAM (Mo)");
+        cols.add("FREE RAM (Mo)");
+        cols.add("CPU LOAD (%)");
         
         this.table = new JTable(this.data, cols);                   //table d'affichage
-
-        JScrollPane scroll = new JScrollPane(this.table, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        this.table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        JScrollPane scroll = new JScrollPane(this.table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scroll.setColumnHeaderView(this.table.getTableHeader());
         this.add(scroll);
         
@@ -48,33 +46,25 @@ public class HostList extends JPanel{
     //METHODS
 
     public void update(Hote hote){
-        //Container fen = SwingUtilities.getUnwrappedParent(this);
-        //fen.setVisible(false);
         DefaultTableModel model = (DefaultTableModel)this.table.getModel();
         int indiceSuppress = this.dash.frame.serveur.getHotes().indexOf(hote);
         model.removeRow(indiceSuppress);
         model.addRow(hote.getData());
         int nbrLignes = model.getRowCount();
         model.moveRow(nbrLignes-1, nbrLignes-1, indiceSuppress);
-        //fen.setVisible(true);
     }
 
 
     public void remove(Hote hote){
-        //Container fen = SwingUtilities.getUnwrappedParent(this);
-        //fen.setVisible(false);
         DefaultTableModel model = (DefaultTableModel)this.table.getModel();
         int indiceSuppress = this.dash.frame.serveur.getHotes().indexOf(hote);
         model.removeRow(indiceSuppress);
-        //fen.setVisible(true);
+        
     }    
     
     public void add(Hote hote){
-        //Container fen = SwingUtilities.getUnwrappedParent(this);
-        //fen.setVisible(false);
         DefaultTableModel model = (DefaultTableModel)this.table.getModel();
         model.addRow(hote.getData());
-        //fen.setVisible(true);
     }
 
     

@@ -22,7 +22,7 @@ public class ConnectionBuilder extends Thread {
                 System.out.print("Attente d'une connexion au serveur");
                 Hote h = this.serveur.getConnection();                  //obtiention d'un nouvel hote
                 this.serveur.hotes.add(h);                              //ajout a la liste des hotes connectes
-                HoteListener hl = new HoteListener(h);                  //instanciation du thread qui ecoutera ce nouvel hote
+                HoteListener hl = new HoteListener(h);                  //instanciation du thread ecouteur
                 hl.start();
                 
             } catch (Exception e) {

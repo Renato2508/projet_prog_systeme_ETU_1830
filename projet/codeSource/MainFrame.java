@@ -12,11 +12,11 @@ public class MainFrame extends JFrame{
     public MainFrame(){}
 
     public MainFrame(Serveur serveur){
-        this();
         this.setServeur(serveur);
-        this.setDash(new Dashboard(this));
+        this.setDash(new Dashboard(this));          //instanciation du dashboard principal
         this.add(this.dash);
         this.setSize(800,600);
+        this.setTitle("Dashboard");
         this.setVisible(true);
     }
 
